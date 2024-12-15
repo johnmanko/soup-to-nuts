@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hello-world-config
+  namespace: saas-app
+data:
+  greeting.template: "Feliz navidad, %s!"

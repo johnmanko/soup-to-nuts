@@ -1,0 +1,69 @@
+name: out-cluster-stack
+
+services:
+  
+  postgres:
+    image: postgres:17.2-alpine3.21
+    restart: always
+    ports:
+      - 5432:5432
+    networks:
+      - out_cluster_net
+    environment:
+      POSTGRES_PASSWORD: postgres
+      PGDATA: "/var/lib/postgresql/data/pgdata"
+    volumes:
+      - postgres_vol:/var/lib/postgresql/data
+      - "./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
+
+  adminer:
+    image: adminer:4.8.1-standalone
+    restart: always
+    environment:
+      ADMINER_DEFAULT_SERVER: postgres
+    depends_on:
+      - postgres
+    networks:
+      - out_cluster_net
+    ports:
+      - 5433:8080
+
+  valkey:
+    image: valkey/valkey:8.0.1-bookworm
+    ports:
+      - "6379:6379"
+    volumes:
+      - valkey_vol:/data
+    networks:
+      - out_cluster_net
+
+  mongo:
+    image: mongo:7.0.15-jammy
+    restart: always
+    env_file: [.env-mongo]
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_vol:/data/db
+      - "./mongo/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d"
+    networks:
+      - out_cluster_net
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 27018:8081
+    depends_on:
+      - mongo
+    env_file: [.env-mongo]
+    networks:
+      - out_cluster_net
+      
+volumes: 
+  postgres_vol: {}
+  mongo_vol: {}
+  valkey_vol: {}
+
+networks:
+  out_cluster_net:

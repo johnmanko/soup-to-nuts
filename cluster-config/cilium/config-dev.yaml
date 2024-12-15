@@ -1,0 +1,45 @@
+kubeProxyReplacement: true
+image:
+  pullPolicy: IfNotPresent
+ipam:
+  mode: kubernetes
+l7Proxy: true
+bpf:
+  masquerade: true
+egressGateway:
+  enabled: true
+ingress:
+  enabled: true
+envoy:
+  enabled: true
+  securityContext:
+    capabilities:
+      keepCapNetBindService: true
+      envoy:
+      - NET_ADMIN
+      - SYS_ADMIN
+      - NET_BIND_SERVICE
+gatewayAPI:
+  enabled: true
+  externalTrafficPolicy: Local
+  enableProxyProtocol: false
+  enableAppProtocol: true
+#  hostNetwork:
+#    enabled: true
+hubble:
+  enabled: true
+  relay:
+    enabled: true
+  ui:
+    enabled: true
+ipv4:
+  enabled: true
+ipv6:
+  enabled: false
+loadBalancer:
+  enabled: true
+#prometheus:
+#  enabled: false
+#operator:
+#  prometheus:
+#    enabled: true
