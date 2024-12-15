@@ -57,11 +57,13 @@ Create a cluster using a [configuration file](https://kind.sigs.k8s.io/docs/user
 > [!CAUTION]
 > If you plan on using Istio's CNI (which is not a standalone CNI, but rather piggybacks off a primary CNI), you'll also need to disable Kind's default CNI and install another, such Calico, Flannel, or Cilium.  Kind's default CNI is not compatible with Istio.
 
-`cluster-no-cni.yaml` (if install Cilium or Istio for your service mesh):
+`cluster-no-cni.yaml` (if installing Cilium or Istio for your service mesh):
 ```yaml
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
 name: cluster
+networking:
+  disableDefaultCNI: true
 nodes:
 - role: control-plane
 - role: worker
