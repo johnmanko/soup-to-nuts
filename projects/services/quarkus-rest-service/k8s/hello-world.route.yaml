@@ -1,19 +1,20 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: HTTPRoute
 metadata:
-  name: hello-world-route
+  name: q-hello-route
   namespace: saas-app
 spec:
   parentRefs:
   - group: gateway.networking.k8s.io
     kind: Gateway
     name: default-gateway
-    namespace: kube-system
+    namespace: ingress
   rules:
   - backendRefs:
     - group: ""
       kind: Service
-      name: quarkus-rest-service
+      name: quarkus-hello-service
+      namespace: saas-app
       port: 80
       weight: 1
     matches:
@@ -25,5 +26,4 @@ spec:
       urlRewrite:
         path:
           type: ReplacePrefixMatch
-          replacePrefixMatch: /
-
+          replacePrefixMatch: /api/v1/hello

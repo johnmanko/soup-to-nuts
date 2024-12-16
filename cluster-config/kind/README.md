@@ -57,7 +57,7 @@ Create a cluster using a [configuration file](https://kind.sigs.k8s.io/docs/user
 > [!CAUTION]
 > If you plan on using Istio's CNI (which is not a standalone CNI, but rather piggybacks off a primary CNI), you'll also need to disable Kind's default CNI and install another, such Calico, Flannel, or Cilium.  Kind's default CNI is not compatible with Istio.
 
-`cluster-no-cni.yaml` (if installing Cilium or Istio for your service mesh):
+`cluster-no-cni.yaml` (if installing Cilium or Istio CNI plugin):
 ```yaml
 kind: Cluster
 apiVersion: kind.x-k8s.io/v1alpha4
@@ -93,36 +93,6 @@ Once the cluster is running, we need to run the `cloud-provider-kind` in a termi
 
 ```
 cloud-provider-kind
-```
-
-## Dashboard
-
-
-
-Setup Dashboard UI for kind
-
-```
-kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
-```
-
-Create a ServiceAccount and ClusterRoleBinding to provide admin access to the newly created cluster.
-
-```
-kubectl create serviceaccount -n kubernetes-dashboard admin-user
-kubectl create clusterrolebinding -n kubernetes-dashboard admin-user --clusterrole cluster-admin --serviceaccount=kubernetes-dashboard:admin-user
-```
-
-To log in to your Dashboard, you need a Bearer Token. Use the following command to store the token in a variable.
-
-```
-token=$(kubectl -n kubernetes-dashboard create token admin-user)
-echo $token
-```
-
-You can access your [Dashboard](https://istio.io/latest/docs/setup/platform-setup/kind/#setup-dashboard-ui-for-kind) using the kubectl command-line tool by running the following command:
-
-```
-kubectl proxy [http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/](http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/)
 ```
 
 To copy docker images into a kind cluster, use the following:

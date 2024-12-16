@@ -2,13 +2,21 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: default-gateway
-  namespace: kube-system
+  namespace: ingress
 spec:
   gatewayClassName: istio
   listeners:
   - name: http-listener
     port: 80
     protocol: HTTP
+    allowedRoutes:
+      namespaces:
+        from: All
+  - name: https-listener
+    port: 443
+    protocol: TLS
+    tls:
+      mode: Passthrough      
     allowedRoutes:
       namespaces:
         from: All

@@ -17,7 +17,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
                 title = "Hello Service API",
                 contact = @Contact(
                         name = "John Manko",
-                        url = "https://github.com/johnmanko",
+                        url = "https://github.com/johnmanko/soup-to-nuts/tree/master",
                         email = "redacted"),
                 license = @License(name = "GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007",
                         url = "https://www.gnu.org/licenses/gpl-3.0.txt"))

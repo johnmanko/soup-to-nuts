@@ -14,14 +14,29 @@ Package the project
 docker build -f src/main/docker/Dockerfile.native -t localhost:5000/johnmanko/quarkus-helloworld-service:1.0.0 .
 ```
 
-Deploy the project (to local Docker.  Please read [Deploying to local Kubernetes](https://quarkus.io/guides/deploying-to-kubernetes#deploying-to-local-kubernetes) for information on clusters such as KinD.)
+Deploy the project (to local Docker.  Please read [Deploying to local Kubernetes](https://quarkus.io/guides/deploying-to-kubernetes#deploying-to-local-kubernetes) for information on clusters such as Kind).
+
+You'll need to change the service type in the generated `minikube.yml` from `NodePort` to `ClusterIP`:
+
+```yaml
+spec:
+  type: ClusterIP
+```
+
+Or deploy `kubernetes.yml` (recommended)
 ```shell
-kubectl apply -f target/kubernetes/minikube.yml 
+kubectl apply -f target/kubernetes/kubernetes.yml 
+```
+
+Add HTTPRoute (if you have the Gateway API correctly configured):
+
+```shell
+k apply -f k8s/hello-world.route.yaml 
 ```
 
 Curl the endpoint:
 ```shell
-curl http://localhost:8080/api/v1/q-hello/
+curl http://localhost:80/q-hello
 Hello World%
 ```
 

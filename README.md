@@ -1,3 +1,49 @@
+# Purpose
+
+*What this project is*
+
+This repo is going to be a living guide with valid configurations, manifests, instructions and projects.  
+
+Feel free to contribute with PRs to add/correct information, or provide additional sample deployable projects.  
+
+*What this project is NOT*
+
+This is NOT a substitute for each project's (Istio, Cilium, Rancher Desktop) documentation.  Rather, it's simply TL;DR guide to get running quickly.
+
+I highly encourse you to visit the documentation of the installations you plan to use in order to gain a greater understanding of each.
+
+* [Cilium](https://cilium.io/) CNI + Service Mesh.
+* [Istio](https://istio.io/) CNI Extension (requires primary CNI installed) + Service Mesh.
+* [Rancher Desktop](https://rancherdesktop.io/) - A Kubernetes runtime.
+* [Docker Desktop](https://www.docker.com/products/docker-desktop/) - Used for running both Docker workloads (see [infra-services/out-cluser](infra-services/out-cluster/README.md)), but includes a basic Kubernetes runtime.
+* [Kind](https://kind.sigs.k8s.io/) - A Kubernetes runtime that installs on Docker or Docker Desktop
+* [Knative](https://knative.dev/docs/) - A cluster extension to add serverless function support
+* [Minikube](https://minikube.sigs.k8s.io/docs/) - A Kubernetes runtime.  Not covered in this guide yet, but pull requests are welcome.
+* [Flannel](https://github.com/flannel-io/flannel) - Simple CNI
+
+* [Quarkus](https://quarkus.io/) - A cloud-native Java framework for building cloud-native services and serverless functions
+* [Spring Boot](https://spring.io/projects/spring-boot) - An opinionated Java framework for building microservices
+* [Hapi.js](https://hapi.dev/) - A Node.js framework for building node-based microservices
+
+* [Kafka](https://kafka.apache.org/) - An open-source distributed event streaming platform, which serve as the basis for events in our cluster.  Note, Knative requires a bus backend.
+* [Valkey](https://valkey.io/) - A fork of Redis, which will be used for in-memory caching
+
+* [Homebrew](https://brew.sh/)
+* [jq](https://jqlang.github.io/jq/)
+* [GraalVM](https://www.graalvm.org/)
+* [Node.js](https://nodejs.org)
+
+# Cluster Formulas
+
+Here are a few formulas to try when creating your cluster.
+
+* Docker Desktop + Docker Bundled Kubernetes + Istio + (MacOS: [docker-mac-net-connect](https://github.com/chipmk/docker-mac-net-connect))
+* Docker (or Docker Desktop) + Kind + Istio (without CNI) + (MacOS: [Cloud Provider KIND](https://kind.sigs.k8s.io/docs/user/loadbalancer/) and [docker-mac-net-connect](https://github.com/chipmk/docker-mac-net-connect))
+* Docker (or Docker Desktop) + Cilium + (MacOS: [Cloud Provider KIND](https://kind.sigs.k8s.io/docs/user/loadbalancer/) and [docker-mac-net-connect](https://github.com/chipmk/docker-mac-net-connect))
+* Docker (or Docker Desktop) + Flannel + Istio (with or without CNI) +  (MacOS: [Cloud Provider KIND](https://kind.sigs.k8s.io/docs/user/loadbalancer/) and [docker-mac-net-connect](https://github.com/chipmk/docker-mac-net-connect))
+
+_Please consider adding your own to this list_
+
 # Organization
 
 ### Cluster Config
