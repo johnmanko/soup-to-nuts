@@ -7,7 +7,7 @@ spec:
   parentRefs:
   - group: gateway.networking.k8s.io
     kind: Gateway
-    name: default-gateway
+    name: gateway
     namespace: ingress
   rules:
   - backendRefs:
