@@ -208,7 +208,7 @@ Hello World%
 
 ## Linux
 
-The is a [known bug](https://github.com/docker/desktop-linux/issues/209) with running Ubuntu 24.04 or greater and pre Docker Desktop 4.35.0 that won't allow you to access the containers.  This isn't a problem directly related to a k8s cluster, but it affects Docker itself.
+There is a [known bug](https://github.com/docker/desktop-linux/issues/209) with running Ubuntu 24.04 or greater and pre Docker Desktop 4.35.0 that won't allow you to access the containers.  This isn't a problem directly related to a k8s cluster, but it affects Docker itself.
 
 A workaround (restart Docker Desktop):
 ```shell
