@@ -14,7 +14,7 @@ Package the project
 docker build -f src/main/docker/Dockerfile.native -t localhost:5000/johnmanko/quarkus-helloworld-service:1.0.0 .
 ```
 
-Deploy the project (to local Docker.  Please read [Deploying to local Kubernetes](https://quarkus.io/guides/deploying-to-kubernetes#deploying-to-local-kubernetes) for information on clusters such as Kind).
+Deploy the project to local Docker.  Please read [Deploying to local Kubernetes](https://quarkus.io/guides/deploying-to-kubernetes#deploying-to-local-kubernetes) for information on clusters such as Kind).
 
 You'll need to change the service type in the generated `minikube.yml` from `NodePort` to `ClusterIP`:
 
@@ -31,12 +31,41 @@ kubectl apply -f target/kubernetes/kubernetes.yml
 Add HTTPRoute (if you have the Gateway API correctly configured):
 
 ```shell
-k apply -f k8s/hello-world.route.yaml 
+kubectl apply -f k8s/hello-world.route.yaml 
 ```
 
 Curl the endpoint:
 ```shell
 curl http://localhost:80/q-hello
+Hello World%
+```
+
+Or using Kind, use the external IP of the LoadBalancer service after using starting `cloud-provider-kind` and then `docker-mac-net-connect`::
+```shell
+❯ kubectl get svc -A
+NAMESPACE      NAME                    TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)                                      AGE
+default        kubernetes              ClusterIP      10.96.0.1     <none>        443/TCP                                      157m
+ingress        gateway-istio           LoadBalancer   10.96.94.66   172.19.0.6    15021:30509/TCP,80:31538/TCP,443:31755/TCP   41m
+istio-system   istiod                  ClusterIP      10.96.63.18   <none>        15010/TCP,15012/TCP,443/TCP,15014/TCP        76m
+kube-system    kube-dns                ClusterIP      10.96.0.10    <none>        53/UDP,53/TCP,9153/TCP                       157m
+saas-app       quarkus-hello-service   ClusterIP      10.96.3.123   <none>        80/TCP                                       35m
+❯ curl -v http://172.19.0.6/q-hello
+*   Trying 172.19.0.6:80...
+* Connected to 172.19.0.6 (172.19.0.6) port 80
+> GET /q-hello HTTP/1.1
+> Host: 172.19.0.6
+> User-Agent: curl/8.7.1
+> Accept: */*
+>
+* Request completely sent off
+< HTTP/1.1 200 OK
+< content-length: 11
+< content-type: text/plain;charset=UTF-8
+< x-envoy-upstream-service-time: 10
+< date: Tue, 17 Dec 2024 04:08:34 GMT
+< server: istio-envoy
+<
+* Connection #0 to host 172.19.0.6 left intact
 Hello World%
 ```
 

@@ -53,7 +53,7 @@ spec:
       enabled: false
 ```
 
-#### Instio CNI
+#### Istio CNI
 
 If you want to enable Istio CNI, add the following `spec` configuration to the above yaml.  Be sure to install a compatible CNI (not Kind's default CNI).
 
@@ -82,27 +82,27 @@ See [../README.md](../README.md) for Gateway API CRD installation.
 
 Read about Istio's [implementation](https://istio.io/latest/docs/tasks/traffic-management/ingress/gateway-api/) of the Kubernetes [Gateway API](https://gateway-api.sigs.k8s.io/).
 
-Create a namespace:
+For reasons of consistency across the possible combinations of cluster setup, create a namespac name `ingress`.  The Istio instruction give the following, but we'll change it:
 
+Do not create this namespace:
 ```shell
 kubectl create namespace istio-ingress
 ```
 
-or using the included file:
-
-`ns-istio-ingress.yaml`:
+Instead, use the included file, but these instructions are also noted in the [general cluster](../README.md) instructions:
+`cluster-config/manifests/ns-ingress.yaml`:
 ```yaml
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: istio-ingress
+  name: ingress
 ```
 
 ```
-kubectl apply -f cluster-config/istio/ns-istio-ingress.yaml
+kubectl apply -f cluster-config/manifest/ns-ingress.yaml
 ```
 
-For additional namespaces that will be using Istio sidecar injection, you'll need to tag them. You'll need to stop all running pods in those namespaces.
+For additional namespaces that will be using Istio sidecar injection, you'll need to tag them. You'll need to stop all running pods in those namespaces, too.
 
 ```shell
 kubectl label namespace saas-app istio-injection=enabled --overwrite

@@ -44,6 +44,8 @@ kubectl apply -f cluster-config/manifests/ns-saas-app.yaml
 
 Gateway API are common to all installation, so once you have your cluster type selected and installed, be sure to install the following CRDs.
 
+See Cilium [docs](https://docs.cilium.io/en/latest/network/servicemesh/gateway-api/gateway-api/) for specific CRDs required, but generally the following should work.
+
 Use the provided script:
 
 ```shell
@@ -57,7 +59,7 @@ kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v
 kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.2.0/config/crd/standard/gateway.networking.k8s.io_httproutes.yaml
 kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.2.0/config/crd/standard/gateway.networking.k8s.io_referencegrants.yaml
 kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.2.0/config/crd/standard/gateway.networking.k8s.io_grpcroutes.yaml
-kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.2.0/config/crd/experimental/gateway.networking.k8s.io_tlsroutes.yaml
+kubectl apply -f https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.2.0/config/crd/standard/gateway.networking.k8s.io_tlsroutes.yaml
 ```
 
 Verify:
@@ -71,7 +73,7 @@ referencegrants.gateway.networking.k8s.io   2024-08-22T03:13:37Z
 tlsroutes.gateway.networking.k8s.io         2024-08-22T03:13:55Z
 ```
 
-Optionally, install the experimental CRDs.  Cilium requires these due to a bug.  See Cilium [docs](https://docs.cilium.io/en/latest/network/servicemesh/gateway-api/gateway-api/).
+Optionally, install the experimental CRDs.  
 ```shell
 kubectl apply -f https://github.com/kubernetes-sigs/gateway-api/releases/download/v1.2.0/experimental-install.yaml
 ```
@@ -84,11 +86,15 @@ Some installations require a local [registry](https://hub.docker.com/_/registry)
 docker run -d -p 5000:5000 --restart always --name registry registry:2
 ```
 
+On MacOS, you might have to stop ControlCenter or switch to port 5001.  See this [Stackoverflow post](https://stackoverflow.com/a/72369347/1686575) for more information.
+
 And then build and push your image:
 ```shell
 docker build . -t localhost:5000/my-image
 docker push localhost:5000/my-image
 ```
+
+For Kind cluster, make sure to copy the image from the registry into the cluster nodes.  See the Kind walkthrough.
 
 Your pod manifest will reference the image as such:
 ```shell
@@ -168,6 +174,36 @@ sudo brew services start chipmk/tap/docker-mac-net-connect
 Run in terminal:
 ```shell
 sudo docker-mac-net-connect
+```
+
+Also, you'll need to access the application using the LoadBalancer service external IP, after you start `cloud-provider-kind` and then `docker-mac-net-connect` (order might matter).
+
+```shell
+❯ kubectl get svc -A
+NAMESPACE      NAME                    TYPE           CLUSTER-IP    EXTERNAL-IP   PORT(S)                                      AGE
+default        kubernetes              ClusterIP      10.96.0.1     <none>        443/TCP                                      157m
+ingress        gateway-istio           LoadBalancer   10.96.94.66   172.19.0.6    15021:30509/TCP,80:31538/TCP,443:31755/TCP   41m
+istio-system   istiod                  ClusterIP      10.96.63.18   <none>        15010/TCP,15012/TCP,443/TCP,15014/TCP        76m
+kube-system    kube-dns                ClusterIP      10.96.0.10    <none>        53/UDP,53/TCP,9153/TCP                       157m
+saas-app       quarkus-hello-service   ClusterIP      10.96.3.123   <none>        80/TCP                                       35m
+❯ curl -v http://172.19.0.6/q-hello
+*   Trying 172.19.0.6:80...
+* Connected to 172.19.0.6 (172.19.0.6) port 80
+> GET /q-hello HTTP/1.1
+> Host: 172.19.0.6
+> User-Agent: curl/8.7.1
+> Accept: */*
+>
+* Request completely sent off
+< HTTP/1.1 200 OK
+< content-length: 11
+< content-type: text/plain;charset=UTF-8
+< x-envoy-upstream-service-time: 10
+< date: Tue, 17 Dec 2024 04:08:34 GMT
+< server: istio-envoy
+<
+* Connection #0 to host 172.19.0.6 left intact
+Hello World%
 ```
 
 ## Linux

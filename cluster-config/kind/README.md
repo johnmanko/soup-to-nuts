@@ -1,5 +1,7 @@
 ## Installation
 
+Read more about installing and configuring Kind in their [docs](https://kind.sigs.k8s.io/).
+
 Install Kind using [homebrew](https://formulae.brew.sh/formula/kind#default): 
 
 ```
@@ -24,14 +26,11 @@ This will install the binary in $GOBIN (typically ~/go/bin); you can make it ava
 sudo install ~/go/bin/cloud-provider-kind /usr/local/bin
 ```
 
-```shell
-kubectl label node kind-control-plane node.kubernetes.io/exclude-from-external-load-balancers-node/kind-control-plane unlabeled
-```
-
-
 ### `extraPortMappings`
 
-Alternatively, directly expose ports using `extraPortMappings` under the `control-plane` `role` (add this to the cluster.yaml` below):
+We'll be usung Cluster Provider for Kind for accessing your cluster, but there is the option of exposing the control plance node with extra ports.
+
+Directly expose ports using `extraPortMappings` under the `control-plane` `role` (add this to the cluster.yaml` below).  Read the Kind [documentation](https://kind.sigs.k8s.io/docs/user/quick-start/#mapping-ports-to-the-host-machine) for more info.
 
 ```yaml
 - role: control-plane
@@ -51,6 +50,28 @@ Alternatively, directly expose ports using `extraPortMappings` under the `contro
 ```
 
 ## Create Cluster
+
+```shell
+kind create cluster --config=cluster.yaml -n training-cluster
+```
+
+Check your kubernetes contexts
+```shell
+$ kubectl config get-contexts
+CURRENT   NAME                    CLUSTER                 AUTHINFO                NAMESPACE
+          default                 default                 default
+*         kind-training-cluster   kind-training-cluster   kind-training-cluster
+          rancher-desktop         rancher-desktop         rancher-desktop
+```
+
+If you aren't already using your kind context, switch to it now:
+```shell
+kubectl cluster-info --context kind-training-cluster
+```
+
+```shell
+kubectl label node kind-control-plane node.kubernetes.io/exclude-from-external-load-balancers-node/kind-control-plane unlabeled
+```
 
 Create a cluster using a [configuration file](https://kind.sigs.k8s.io/docs/user/configuration/):
 
@@ -74,13 +95,6 @@ nodes:
 ```shell
 kind create cluster --config=cluster-config/kind/cluster-no-cni.yaml
 ```
-
-or with a default CNI
-
-```shell
-kind create cluster --config=cluster-config/kind/cluster.yaml
-```
-
 ----
 
 Switch `kubectl` context:
@@ -95,7 +109,9 @@ Once the cluster is running, we need to run the `cloud-provider-kind` in a termi
 cloud-provider-kind
 ```
 
-To copy docker images into a kind cluster, use the following:
+On MacOS, you'll also need to install and run [docker-mac-net-connect](https://github.com/chipmk/docker-mac-net-connect). See the [general cluster](../README.md) for more info.
+
+You can use a registry installed in Docker (see general cluster info), or  copy docker images into a kind cluster, use the following:
 
 ```shell
 kind load docker-image <image-name>:<tag> --name <kind-cluster-name>
