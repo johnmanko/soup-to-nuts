@@ -10,7 +10,7 @@ Feel free to contribute with PRs to add/correct information, or provide addition
 
 This is NOT a substitute for each project's (Istio, Cilium, Rancher Desktop) documentation.  Rather, it's simply TL;DR guide to get running quickly.
 
-I highly encourse you to visit the documentation of the installations you plan to use in order to gain a greater understanding of each.
+I highly encourage you to visit the documentation of the installations you plan to use.  You'll gain a greater understanding of each.
 
 * [Cilium](https://cilium.io/) CNI + Service Mesh.
 * [Istio](https://istio.io/) CNI Extension (requires primary CNI installed) + Service Mesh.
@@ -28,19 +28,19 @@ I highly encourse you to visit the documentation of the installations you plan t
 * [Kafka](https://kafka.apache.org/) - An open-source distributed event streaming platform, which serve as the basis for events in our cluster.  Note, Knative requires a bus backend.
 * [Valkey](https://valkey.io/) - A fork of Redis, which will be used for in-memory caching
 
-* [Homebrew](https://brew.sh/)
-* [jq](https://jqlang.github.io/jq/)
-* [GraalVM](https://www.graalvm.org/)
-* [Node.js](https://nodejs.org)
+* [Homebrew](https://brew.sh/) - Software package manager
+* [jq](https://jqlang.github.io/jq/) - A cli utility for parsing, querying and formatting json
+* [GraalVM](https://www.graalvm.org/) - GraalVM compiles your Java code to native binary, ideal for cloud deployments that need high performance and low start-up latency
+* [Node.js](https://nodejs.org) - A javascript server
 
 # Cluster Formulas
 
 Here are a few formulas to try when creating your cluster.
 
 * Docker Desktop + Docker Bundled Kubernetes + Istio + (MacOS: [docker-mac-net-connect](https://github.com/chipmk/docker-mac-net-connect))
-* Docker (or Docker Desktop) + Kind + Istio (without CNI) + (MacOS: [Cloud Provider KIND](https://kind.sigs.k8s.io/docs/user/loadbalancer/) and [docker-mac-net-connect](https://github.com/chipmk/docker-mac-net-connect))
-* Docker (or Docker Desktop) + Cilium + (MacOS: [Cloud Provider KIND](https://kind.sigs.k8s.io/docs/user/loadbalancer/) and [docker-mac-net-connect](https://github.com/chipmk/docker-mac-net-connect))
-* Docker (or Docker Desktop) + Flannel + Istio (with or without CNI) +  (MacOS: [Cloud Provider KIND](https://kind.sigs.k8s.io/docs/user/loadbalancer/) and [docker-mac-net-connect](https://github.com/chipmk/docker-mac-net-connect))
+* Docker (or Docker Desktop) + Kind + Istio (without CNI) + [Cloud Provider KIND](https://kind.sigs.k8s.io/docs/user/loadbalancer/)(if using DD) + (MacOS: [docker-mac-net-connect](https://github.com/chipmk/docker-mac-net-connect))
+* Docker (or Docker Desktop) + Cilium + [Cloud Provider KIND](https://kind.sigs.k8s.io/docs/user/loadbalancer/)(if using DD) + (MacOS: [docker-mac-net-connect](https://github.com/chipmk/docker-mac-net-connect))
+* Docker (or Docker Desktop) + Flannel + Istio (with or without CNI) + [Cloud Provider KIND](https://kind.sigs.k8s.io/docs/user/loadbalancer/)(if using DD) + (MacOS: [docker-mac-net-connect](https://github.com/chipmk/docker-mac-net-connect))
 
 _Please consider adding your own to this list_
 
