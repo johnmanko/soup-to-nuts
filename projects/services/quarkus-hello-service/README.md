@@ -1,20 +1,47 @@
-# quarkus-rest-service
+# Quarkus RESTful Hello World service
 
-## TL;DR
+A simple Hello World REST service for Quarkus
 
-Apply the Kubernetes manifests in `k8s`.
+## Features Covered
+
+This project uses Quarkus to demonstrate a simple REST service.
+
+This project demonstrates the following features:
+
+* A simple [REST](https://quarkus.io/guides/rest) and [JSON REST Services](https://quarkus.io/guides/rest-json) service with GET endpoints
+* Unit [Testing](https://quarkus.io/guides/getting-started-testing) using `@QuarkusTest`, [JUnit](https://junit.org/junit5/) and [Rest Assured](https://rest-assured.io/) and [JaCoCo](https://quarkus.io/guides/tests-with-coverage).
+* [OpenAPI](https://quarkus.io/guides/openapi-swaggerui) annotations on the REST service
+* Added [OpenTelemetry](https://quarkus.io/guides/opentelemetry) support
+* [Kubernetes](https://quarkus.io/guides/deploying-to-kubernetes) support, ie: generating of Kubernetes manifests for production and dev (include ConfigMap)
+* Injectable [@ConfigProperty](https://quarkus.io/guides/config) (not covered is [@ConfigMapping](https://quarkus.io/guides/config-mappings))
+* Building a [native binary](https://quarkus.io/guides/building-native-image) Docker image (See also [Native Reference Guide](https://quarkus.io/guides/native-reference))
+
+If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+
+## Building Image TL;DR
 
 Build the project
 ```shell
 quarkus build --native -Dquarkus.native.container-build=true -Dquarkus.native.container-runtime=docker
 ```
 
-Package the project
+Package the project (change `<VERSION` to this project's version):
 ```shell
-docker build -f src/main/docker/Dockerfile.native -t localhost:5000/johnmanko/quarkus-helloworld-service:1.0.0 .
+docker build -f src/main/docker/Dockerfile.native -t localhost:5000/johnmanko/quarkus-helloworld-service:<VERSION> .
 ```
 
 Deploy the project to local Docker.  Please read [Deploying to local Kubernetes](https://quarkus.io/guides/deploying-to-kubernetes#deploying-to-local-kubernetes) for information on clusters such as Kind).
+
+
+## Kubernetes
+
+### Generating Kubernetes Manifests
+
+Manifests are generates as part of the build process and placed in `target/kubernetes`.
+
+### Applying resources
+
+Apply the Kubernetes manifests in `k8s`.
 
 You'll need to change the service type in the generated `minikube.yml` from `NodePort` to `ClusterIP`:
 
@@ -28,37 +55,28 @@ Or deploy `kubernetes.yml` (recommended)
 kubectl apply -f target/kubernetes/kubernetes.yml 
 ```
 
+This project uses the same ConfigMap used by project `springboot-rest-service`.  If you haven't already, install that map:
+
+```shell
+kubectl apply -f ../../manifests/hello-world.cm.yaml 
+```
+
 Add HTTPRoute (if you have the Gateway API correctly configured):
 
 ```shell
 kubectl apply -f k8s/hello-world.route.yaml 
 ```
 
-Curl the endpoint:
+Test your installation:
 ```shell
 curl http://localhost/q-hello
 Hello World%
 ```
 
-Or using Kind, use the external IP of the LoadBalancer service after using starting `cloud-provider-kind` and then `docker-mac-net-connect`::
+Or using Kind, use the external IP of the LoadBalancer service after using starting `cloud-provider-kind` and then `docker-mac-net-connect`:
 ```shell
 curl http://<load-balancer-ip>/q-hello
-Hello World%
 ```
-
-> Quarkus RESTful service
-
-This project uses Quarkus to demonstrate a simple REST service.  
-
-This project demonstrates the following features:
-
-* A simple [REST](https://quarkus.io/guides/rest) service with GET endpoints
-* Unit [Testing](https://quarkus.io/guides/getting-started-testing) using `@QuarkusTest`, [JUnit](https://junit.org/junit5/) and [Rest Assured](https://rest-assured.io/) and [JaCoCo](https://quarkus.io/guides/tests-with-coverage).
-* [OpenAPI](https://quarkus.io/guides/openapi-swaggerui) annotations on the REST service
-* Added [OpenTelemetry](https://quarkus.io/guides/opentelemetry) support
-* [Kubernetes](https://quarkus.io/guides/deploying-to-kubernetes) support, ie: generating of Kubernetes manifests for production and dev
-
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
 
 When running this app using dev services (`quarkus dev`), you can view the [SwaggerUI](http://localhost:8080/q/dev-ui/io.quarkus.quarkus-smallrye-openapi/swagger-ui) to test the endpoints.
 

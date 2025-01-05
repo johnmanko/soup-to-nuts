@@ -126,6 +126,13 @@ Setup Dashboard UI for kind
 kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
 ```
 
+If you're using Istio, make the dashboard available for Istio sidecar injection:
+```shell
+kubectl label namespace kubernetes-dashboard istio-injection=enabled
+```
+
+Then, delete the pods in `kubernetes-dashboard` namespace to have them recreated with sidecar injection.
+
 Create a ServiceAccount and ClusterRoleBinding to provide admin access to the newly created cluster.
 
 ```
@@ -152,6 +159,7 @@ or apply an HTTPRoute:
 ```shell
 kubectl apply -f cluster-config/http-dashboard.yaml
 ```
+
 
 Available at [https://localhost/dashboard](https://localhost/dashboard).
 

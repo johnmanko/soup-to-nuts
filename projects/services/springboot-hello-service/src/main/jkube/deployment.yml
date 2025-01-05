@@ -1,0 +1,14 @@
+---
+metadata:
+  namespace: saas-app
+spec:
+  template:
+    spec:
+      containers:
+        - image: ${jkube.image}
+          env:
+            - name: GREETING_SUBJECT
+              value: SpringBoot
+          envFrom:
+            - configMapRef:
+                name: hello-world-config

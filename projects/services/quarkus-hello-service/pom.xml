@@ -5,7 +5,7 @@
     <artifactId>quarkus-hello-service</artifactId>
     <version>1.0.0-rc6</version>
     <name>quarkus-hello-service</name>
-    <description>A simple Hello World REST service.</description>
+    <description>A simple Hello World REST service for Quarkus</description>
 
     <properties>
         <compiler-plugin.version>3.13.0</compiler-plugin.version>
