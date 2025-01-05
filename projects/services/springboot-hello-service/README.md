@@ -16,6 +16,7 @@ This project demonstrates the following features:
 * Kubernetes manifests via [jkube](https://eclipse.dev/jkube/docs/kubernetes-maven-plugin/)
 * [GraalVM Native Images]([GraalVM](https://docs.spring.io/spring-boot/reference/packaging/native-image/introducing-graalvm-native-images.html))
 * [Your First GraalVM Native Application](https://docs.spring.io/spring-boot/how-to/native-image/developing-your-first-application.html)
+* [Common Application Properties](https://docs.spring.io/spring-boot/appendix/application-properties/index.html)
 
 If you want to learn more about SpringBoot, please visit its website: [https://docs.spring.io](https://docs.spring.io/spring-boot/tutorial/first-application/index.html).
 
