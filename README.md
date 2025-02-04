@@ -1,3 +1,5 @@
+![soup to nuts header image](header.webp "Soup to Nuts - Kubernetes Configuration")
+
 # Purpose
 
 *What this project is*
